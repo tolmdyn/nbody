@@ -23,9 +23,29 @@ class Ball {
   }
 
   update() {
+    // this.vx = this.vx * 0.999
+    // this.vy = this.vy * 0.999
+
     this.x += this.vx;
     this.y += this.vy;
 
+    // this.checkBoundaryCollision();
+
+    // - Looping
+    // if (this.x + this.vx > canvas.width - this.radius) {
+    //   this.x = this.radius;
+    // } 
+    // if (this.x + this.vx < this.radius) {
+    //   this.x = canvas.width - this.radius;
+    // }
+    // if (this.y + this.vy > canvas.height - this.radius) {
+    //   this.y = this.radius;
+    // } 
+    // if (this.y + this.vy < this.radius) {
+    //   this.y = canvas.height - this.radius;
+    // }
+
+    // - Bouncing
     if (this.y + this.vy > canvas.height - this.radius ||
       this.y + this.vy < this.radius
     ) {
@@ -36,6 +56,20 @@ class Ball {
       this.x + this.vx < this.radius
     ) {
       this.vx = -this.vx;
+    }
+  }
+
+  checkBoundaryCollision() {
+    // check if ball is out of bounds, for the ball-ball collision
+    if (this.x - this.radius < 0) {
+      this.x = this.radius;
+    } else if (this.x + this.radius > canvas.width) {
+      this.x = canvas.width - this.radius;
+    }
+    if (this.y - this.radius < 0) {
+      this.y = this.radius;
+    } else if (this.y + this.radius > canvas.height) {
+      this.y = canvas.height - this.radius;
     }
   }
 
@@ -92,26 +126,29 @@ class Ball {
     if (vn > 0) return;
 
     // Calculate impulse scalar
-    const impulse = 2 * vn / (this.radius + otherBall.radius);
+    const impulse = (2 * vn) / (this.mass + otherBall.mass);
 
-    // Apply impulse to the balls
-    this.vx -= impulse * nx * otherBall.radius;
-    this.vy -= impulse * ny * otherBall.radius;
-    otherBall.vx += impulse * nx * this.radius;
-    otherBall.vy += impulse * ny * this.radius;
+    // Apply impulse to the balls (scale to mass/radius)
+    this.vx -= impulse * nx * otherBall.mass;
+    this.vy -= impulse * ny * otherBall.mass;
+    otherBall.vx += impulse * nx * this.mass;
+    otherBall.vy += impulse * ny * this.mass;
 
     // Separate the balls to prevent overlap
     this.x += nx * overlap / 2;
     this.y += ny * overlap / 2;
     otherBall.x -= nx * overlap / 2;
     otherBall.y -= ny * overlap / 2;
+
+    this.checkBoundaryCollision();
+    otherBall.checkBoundaryCollision();
   }
 }
 
 // let balls = [];
 let balls = [
-  new Ball(canvas.width/2 - 200, 10, 1.5, 1.5, 8, 'red'),
-  new Ball(canvas.width/2 + 200, 10, -1.5, 1.5, 8, 'blue'),
+  new Ball(canvas.width / 2, canvas.height / 2, 0, 0, 50, 'yellow', 500000),
+  new Ball(canvas.width / 2 + 200, 10, -1.5, 1.5, 8, 'blue', 100),
   new Ball(canvas.width/2, 10, 0, -1.5, 8, 'green'),
 ]
 
@@ -133,7 +170,7 @@ function init() {
 
 function addBalls() {
   for (let i = 0; i < 50; i++) {
-    balls.push(new Ball(5 + i * 10, 100, 0, 5, 5, 'red'));
+    balls.push(new Ball(5 + i * 10, 100, 0, -5, 5, 'red'));
   }
 }
 
