@@ -13,6 +13,12 @@ const BODY_C = true;
 // Boundary collision
 const BOUNDARY_C = true;
 
+// Show trail
+const TRAILS = true;
+
+// Trail length
+const TRAIL_LENGTH = 200;
+
 // 
 // -------------------------------
 
@@ -25,9 +31,20 @@ class Ball {
     this.radius = radius;
     this.color = color;
     this.mass = mass | radius;
+    this.trail = [];
   }
 
   draw() {
+    // draw the trail
+    ctx.beginPath();
+    ctx.moveTo(this.trail[0]?.x || this.x, this.trail[0]?.y || this.y);
+    for (let i = 1; i < this.trail.length; i++) {
+      ctx.lineTo(this.trail[i].x, this.trail[i].y);
+    }
+    ctx.strokeStyle = this.color;
+    ctx.stroke();
+
+    // draw the ball
     ctx.beginPath();
     ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2, true);
     ctx.closePath();
@@ -36,10 +53,19 @@ class Ball {
   }
 
   update() {
-    // Entropy / resistance
+    // Update velocity based on entropy / resistance
     // this.vx = this.vx * 0.999
     // this.vy = this.vy * 0.999
 
+    // Add current position to the trail
+    this.trail.push({ x: this.x, y: this.y });
+
+    // Limit the length of the trail
+    if (this.trail.length > TRAIL_LENGTH) {
+      this.trail.shift();
+    }
+
+    // Update position based on velocity
     this.x += this.vx;
     this.y += this.vy;
 
