@@ -2,6 +2,19 @@ const canvas = document.getElementById("canvas");
 const ctx = canvas.getContext("2d");
 let raf;
 
+// -------------------------------
+
+// Gravitational constant
+const G = 0.1;
+
+// Body collision
+const BODY_C = true;
+
+// Boundary collision
+const BOUNDARY_C = true;
+
+// 
+// -------------------------------
 
 class Ball {
   constructor(x, y, vx, vy, radius, color, mass) {
@@ -23,39 +36,26 @@ class Ball {
   }
 
   update() {
+    // Entropy / resistance
     // this.vx = this.vx * 0.999
     // this.vy = this.vy * 0.999
 
     this.x += this.vx;
     this.y += this.vy;
 
-    // this.checkBoundaryCollision();
-
-    // - Looping
-    // if (this.x + this.vx > canvas.width - this.radius) {
-    //   this.x = this.radius;
-    // } 
-    // if (this.x + this.vx < this.radius) {
-    //   this.x = canvas.width - this.radius;
-    // }
-    // if (this.y + this.vy > canvas.height - this.radius) {
-    //   this.y = this.radius;
-    // } 
-    // if (this.y + this.vy < this.radius) {
-    //   this.y = canvas.height - this.radius;
-    // }
-
-    // - Bouncing
-    if (this.y + this.vy > canvas.height - this.radius ||
-      this.y + this.vy < this.radius
-    ) {
-      this.vy = -this.vy;
-    }
-    if (
-      this.x + this.vx > canvas.width - this.radius ||
-      this.x + this.vx < this.radius
-    ) {
-      this.vx = -this.vx;
+    // - Bouncing off walls
+    if (BOUNDARY_C) {
+      if (this.y + this.vy > canvas.height - this.radius ||
+        this.y + this.vy < this.radius
+      ) {
+        this.vy = -this.vy;
+      }
+      if (
+        this.x + this.vx > canvas.width - this.radius ||
+        this.x + this.vx < this.radius
+      ) {
+        this.vx = -this.vx;
+      }
     }
   }
 
@@ -74,12 +74,6 @@ class Ball {
   }
 
   isColliding(otherBall) {
-    // aabb collision
-    // return !(this.x + this.radius < otherBall.x - otherBall.radius ||
-    //   this.x - this.radius > otherBall.x + otherBall.radius ||
-    //   this.y + this.radius < otherBall.y - otherBall.radius ||
-    //   this.y - this.radius > otherBall.y + otherBall.radius);
-
     const dx = this.x - otherBall.x;
     const dy = this.y - otherBall.y;
     const distance = Math.sqrt(dx * dx + dy * dy);
@@ -140,28 +134,76 @@ class Ball {
     otherBall.x -= nx * overlap / 2;
     otherBall.y -= ny * overlap / 2;
 
-    this.checkBoundaryCollision();
-    otherBall.checkBoundaryCollision();
+    // Check we haven't nudged a ball outside of bounds
+    if (BOUNDARY_C) {
+      this.checkBoundaryCollision();
+      otherBall.checkBoundaryCollision();
+    }
+  }
+
+  applyGravity(otherBall) {
+    const dx = otherBall.x - this.x;
+    const dy = otherBall.y - this.y;
+    const distanceSquared = dx * dx + dy * dy;
+    const distance = Math.sqrt(distanceSquared);
+
+    if (distanceSquared === 0 || distance < 1) return;
+
+    // Calculate gravitational force magnitude
+    const forceMagnitude = (G * this.mass * otherBall.mass) / distanceSquared;
+
+    // Normalize the direction vector
+    const nx = dx / distance;
+    const ny = dy / distance;
+
+    // Calculate gravitational force components
+    const fx = forceMagnitude * nx;
+    const fy = forceMagnitude * ny;
+
+    // Apply gravitational force to velocities
+    const dt = 1;
+    this.vx += fx / this.mass * dt;
+    this.vy += fy / this.mass * dt;
+    otherBall.vx -= fx / otherBall.mass * dt;
+    otherBall.vy -= fy / otherBall.mass * dt;
+
+    // Debugging: Print velocities
+    // console.log(`Ball 1: vx=${this.vx.toFixed(2)}, vy=${this.vy.toFixed(2)}`);
+    // console.log(`Ball 2: vx=${otherBall.vx.toFixed(2)}, vy=${otherBall.vy.toFixed(2)}`);
   }
 }
 
 // let balls = [];
 let balls = [
-  new Ball(canvas.width / 2, canvas.height / 2, 0, 0, 50, 'yellow', 500000),
-  new Ball(canvas.width / 2 + 200, 10, -1.5, 1.5, 8, 'blue', 100),
-  new Ball(canvas.width/2, 10, 0, -1.5, 8, 'green'),
+  new Ball(canvas.width / 2, canvas.height / 2, 0, 0, 20, 'yellow', 5000),
+  new Ball(canvas.width / 2 + 200, 30, 0, 0, 20, 'blue', 5000),
+  new Ball(canvas.width / 2, 10, 0, 0, 8, 'green'),
+  new Ball(canvas.width / 2, 700, 0, 0, 8, 'green'),
 ]
 
 function draw() {
   ctx.clearRect(0, 0, canvas.width, canvas.height);
 
+  // ctx.fillStyle = 'rgba(225,225,225,0.05)';
+  // ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+
   balls.forEach(ball => {
     ball.draw();
     ball.update();
-    ball.checkCollision(balls);
+    if (BODY_C)
+      ball.checkCollision(balls);
   })
 
-  raf = window.requestAnimationFrame(draw);
+  // Apply gravity between all pairs of balls
+  for (let i = 0; i < balls.length; i++) {
+    for (let j = i + 1; j < balls.length; j++) {
+      balls[i].applyGravity(balls[j]);
+    }
+  }
+
+
+  window.requestAnimationFrame(draw);
 }
 
 function init() {
@@ -174,5 +216,5 @@ function addBalls() {
   }
 }
 
-addBalls();
+// addBalls();
 init();
