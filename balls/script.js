@@ -4,14 +4,17 @@ let raf;
 
 // -------------------------------
 
-// Gravitational constant
+// Gravitational constant scaled for simulation (Universal G = 6.67430e-11)
 const G = 0.1;
+
+// Coefficient of Restitution
+const e = 0.9;
 
 // Body collision
 const BODY_C = true;
 
 // Boundary collision
-const BOUNDARY_C = true;
+const BOUNDARY_C = false;
 
 // Show trail
 const TRAILS = true;
@@ -129,7 +132,6 @@ class Ball {
 
     // Minimum distance to keep balls from overlapping
     const minDistance = this.radius + otherBall.radius;
-    const overlap = minDistance - distance;
 
     // Normalize the vector between the balls
     const nx = dx / distance;
@@ -145,8 +147,8 @@ class Ball {
     // If balls are moving apart, no need to resolve
     if (vn > 0) return;
 
-    // Calculate impulse scalar
-    const impulse = (2 * vn) / (this.mass + otherBall.mass);
+    // Calculate impulse scalar based on masses and coefficient of restitution
+    const impulse = (2 * vn * e) / (this.mass + otherBall.mass);
 
     // Apply impulse to the balls (scale to mass/radius)
     this.vx -= impulse * nx * otherBall.mass;
@@ -155,6 +157,7 @@ class Ball {
     otherBall.vy += impulse * ny * this.mass;
 
     // Separate the balls to prevent overlap
+    const overlap = minDistance - distance;
     this.x += nx * overlap / 2;
     this.y += ny * overlap / 2;
     otherBall.x -= nx * overlap / 2;
@@ -199,20 +202,8 @@ class Ball {
   }
 }
 
-// let balls = [];
-let balls = [
-  new Ball(canvas.width / 2, canvas.height / 2, 0, 0, 20, 'yellow', 5000),
-  new Ball(canvas.width / 2 + 200, 30, 0, 0, 20, 'blue', 5000),
-  new Ball(canvas.width / 2, 10, 0, 0, 8, 'green'),
-  new Ball(canvas.width / 2, 700, 0, 0, 8, 'green'),
-]
-
 function draw() {
   ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-  // ctx.fillStyle = 'rgba(225,225,225,0.05)';
-  // ctx.fillRect(0, 0, canvas.width, canvas.height);
-
 
   balls.forEach(ball => {
     ball.draw();
@@ -227,8 +218,6 @@ function draw() {
       balls[i].applyGravity(balls[j]);
     }
   }
-
-
   window.requestAnimationFrame(draw);
 }
 
@@ -241,6 +230,15 @@ function addBalls() {
     balls.push(new Ball(5 + i * 10, 100, 0, -5, 5, 'red'));
   }
 }
+
+// ---------------------------------
+
+let balls = [
+  new Ball(380, 380, 0, 0, 20, 'blue', 4000),   // Central ball with high mass
+  new Ball(380, 200, 1, -0.1, 15, 'red', 100),    // Ball in orbit
+  new Ball(600, 200, 0, 0.5, 10, 'green', 50),  // Another ball in a different orbit
+  new Ball(380, 600, 0, 0.5, 5, 'black', 1)  // Another ball in a different orbit
+];
 
 // addBalls();
 init();
