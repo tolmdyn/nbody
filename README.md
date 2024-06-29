@@ -1,7 +1,7 @@
 # N-Body Simulation
 
-This project implements an N-Body simulation in JavaScript using HTML5 Canvas. It simulates the gravitational interaction between multiple bodies (or particles) based on Newtonian physics principles, with toggleable collision detection.
+This project implements a basic simulation of the gravitational interaction between multiple bodies (or particles) based on Newtonian physics, with toggleable collision detection. Written in JavaScript using HTML5 Canvas. 
 
 ## Usage
 
-Hosted on [GitHub Pages](url)
+Hosted on [GitHub Pages](https://tolmdyn.github.io/nbody/)
