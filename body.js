@@ -1,4 +1,4 @@
-import { G, e, BOUNDARY_C, TRAILS, TRAIL_LENGTH } from './constants.js';
+import { G, e, TRAILS, TRAIL_LENGTH, getBoundaryCollision } from './constants.js';
 
 export class Body {
   constructor(x, y, vx, vy, radius, color, mass) {
@@ -49,7 +49,7 @@ export class Body {
     this.y += this.vy;
 
     // - Bouncing off walls
-    if (BOUNDARY_C) {
+    if (getBoundaryCollision()) {
       if (this.y + this.vy > canvas.height - this.radius ||
         this.y + this.vy < this.radius
       ) {
@@ -65,7 +65,6 @@ export class Body {
   }
 
   checkBoundaryCollision() {
-    // check if body is out of bounds, for the body-body collision
     if (this.x - this.radius < 0) {
       this.x = this.radius;
     } else if (this.x + this.radius > canvas.width) {
@@ -140,7 +139,7 @@ export class Body {
     // otherBody.y -= ny * overlap / 2;
 
     // Check we haven't nudged a body outside of bounds
-    if (BOUNDARY_C) {
+    if (getBoundaryCollision()) {
       this.checkBoundaryCollision();
       otherBody.checkBoundaryCollision();
     }
