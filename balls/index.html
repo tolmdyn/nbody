@@ -2,10 +2,84 @@
 <html lang="en-US">
   <head>
     <meta charset="utf-8" />
-    <title>Canvas tutorial</title>
+    <title>nbody sim</title>
+    <style>
+      body {
+        display: flex;
+        flex-direction: row;
+        align-items: flex-start;
+        gap: 20px;
+        margin: 20px;
+        font-family: Arial, sans-serif;
+        background-color: #f0f0f0;
+      }
+      canvas {
+        border: 1px solid #333;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        background-color: #fff;
+      }
+      .form-container {
+        max-width: 200px;
+        padding: 20px;
+        background-color: #fff;
+        border-radius: 10px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      }
+      .form-container h2 {
+        margin-top: 0;
+        font-size: 1.2em;
+        color: #333;
+      }
+      .form-container form {
+        display: flex;
+        flex-direction: column;
+      }
+      .form-container label {
+        margin-bottom: 5px;
+        font-size: 0.9em;
+        color: #333;
+      }
+    </style>
   </head>
   <body>
     <canvas id="canvas" style="border: 1px solid" width="800" height="800"></canvas>
+    <div class="form-container">
+      <h2>Add Body:</h2>
+      <form id="newBodyForm">
+        <label for="xPosition">X Position:</label>
+        <input type="number" id="xPosition" name="xPosition" value="400" required>
+        <br>
+        
+        <label for="yPosition">Y Position:</label>
+        <input type="number" id="yPosition" name="yPosition" value="200" required>
+        <br>
+        
+        <label for="xVelocity">X Velocity:</label>
+        <input type="number" step="0.0001" id="xVelocity" name="xVelocity" value="0" required>
+        <br>
+        
+        <label for="yVelocity">Y Velocity:</label>
+        <input type="number" step="0.0001" id="yVelocity" name="yVelocity" value="0" required>
+        <br>
+        
+        <label for="radius">Radius:</label>
+        <input type="number" id="radius" name="radius" value="10" required>
+        <br>
+        
+        <label for="mass">Mass (optional):</label>
+        <input type="number" id="mass" name="mass">
+        <br>
+
+        <label for="color">Color:</label>
+        <input type="color" id="color" name="color" value="#000000">
+        <br>
+        
+        <button type="submit">Submit</button>
+        <br>
+
+        <button type="reset">Reset</button>
+      </form>
+    </div>
     <script src="script.js" type="module"></script>
   </body>
 </html>
