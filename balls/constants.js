@@ -10,8 +10,8 @@ export const e = 0.9;
 export const TRAIL_LENGTH = 200;
 
 // Scaling factor for distances and masses
-export const DISTANCE_SCALE = 1e6; // 1 million km per pixel
-export const MASS_SCALE = 1e24; // 1e24 kg for visualization purposes
+// export const DISTANCE_SCALE = 1e6; // 1 million km per pixel
+// export const MASS_SCALE = 1e24; // 1e24 kg for visualization purposes
 
 // Parameters
 

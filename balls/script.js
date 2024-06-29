@@ -1,7 +1,7 @@
 const canvas = document.getElementById("canvas");
 const ctx = canvas.getContext("2d");
 
-import { G, BODY_C, MASS_SCALE, DISTANCE_SCALE, BOUNDARY_C, TRAILS, TRAIL_LENGTH } from './constants.js';
+import { BODY_C } from './constants.js';
 import { Body } from './body.js'
 
 function draw() {
@@ -11,7 +11,7 @@ function draw() {
     body.draw(ctx);
     body.update();
     if (BODY_C)
-      body.checkCollision(bodies);
+     body.checkCollision(bodies);
   })
 
   // Apply gravity between all pairs of bodies
@@ -29,24 +29,6 @@ function init() {
 
 // ---------------------------------
 
-let bodies = [
-  new Body(380, 380, 0, 0, 20, 'blue', 4000),   // Central body with high mass
-  // new Body(380, 200, 1.49, 0, 15, 'red', 100),    // body in orbit
-  new Body(380, 550, -1.53, 0, 5, 'black', 1),
-  new Body(380, 100, 1.20, 0, 5, 'black', 1),
-  //new Body(380, 70, 1.35, 0, 5, 'black', 6, 0.1)
-
-];
-
-// let bodies = [
-//   new Body(400, 400, 0, 0, 20, 'yellow', 1.989 * MASS_SCALE), // Sun
-//   new Body(400, 250, 0.017, 0, 5, 'blue', 5.972 * MASS_SCALE), // Earth
-//   new Body(400, 255, 0.022, 0, 2, 'grey', 0.073 * MASS_SCALE)  // Moon
-// ];
-
-
-init();
-
 // Form handling
 const newBodyForm = document.getElementById('newBodyForm');
 
@@ -62,14 +44,48 @@ newBodyForm.addEventListener('submit', function(event) {
   const mass = document.getElementById('mass').value; 
   const color = document.getElementById('color').value;
 
-  // Create a new ball and add it to the simulation
+  // Create a new body and add it to the simulation
   const newBody = new Body(x, y, vx, vy, radius, color, mass); // Assuming mass is based on radius
   bodies.push(newBody);
 
+  initialBodies.push({x, y, vx, vy, radius, color, mass});
+
   // Clear form fields for next input
-  newBallForm.reset();
+  // newBodyForm.reset();
 });
 
-newBodyForm.addEventListener('reset', function(event) {
-
+document.getElementById('resetButton').addEventListener('click', () => {
+  // Reset the bodies array to the initial state
+  bodies = createBodies(initialBodies);
 });
+
+document.getElementById('removeAllButton').addEventListener('click', () => {
+  // Reset the bodies array to the initial state
+  bodies = []; // createBodies(initialBodies);
+  initialBodies = [];
+});
+// ---------------------------------
+
+
+// let initialBodies = [
+//   new Body(380, 380, 0, 0, 20, 'blue', 4000),   // Central body with high mass
+//   new Body(380, 550, -1.53, 0, 5, 'black', 1),
+//   new Body(380, 100, 1.20, 0, 5, 'black', 1),
+// ]
+
+let initialBodies = [
+  {x:380, y:380, vx:0, vy:0, radius:20, color:'blue', mass:4000},   // Central body with high mass
+  {x:380, y:550, vx:-1.53, vy:0, radius:5, color:'black', mass:1},
+  {x:380, y:100, vx:1.20, vy:0, radius:5, color:'black', mass:1},
+]
+
+function createBodies(initialData) {
+  return initialData.map(data => new Body(data.x, data.y, data.vx, data.vy, data.radius, data.color, data.mass));
+}
+
+// Current bodies array
+let bodies = createBodies(initialBodies);
+
+init();
+
+
