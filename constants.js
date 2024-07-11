@@ -1,10 +1,10 @@
-// Constants for use by the simulation
+// Parameters for use by the simulation
 
-// Gravitational constant scaled for simulation (Universal G = 6.67430e-11)
+// Gravitational constant scaled for simulation (Realistic Universal G = 6.67430e-11)
 export const G = 0.1;
 
 // Coefficient of Restitution
-export const e = 0.7;
+export const e = 0.9;
 
 // Trail length
 export const TRAIL_LENGTH = 250;
@@ -12,8 +12,7 @@ export const TRAIL_LENGTH = 250;
 // Show trail
 export const TRAILS = true;
 
-// -------------------------------
-
+// Body and boundary collision toggles
 let BODY_C = true;
 let BOUNDARY_C = false;
 

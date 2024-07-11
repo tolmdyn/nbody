@@ -66,6 +66,12 @@ resetButton.addEventListener('click', () => {
   bodies = createBodies(initialBodies);
 });
 
+randomStateButton.addEventListener('click', () => {
+  // Reset the bodies array to the initial state
+  initialBodies = createInitialState(100);
+  bodies = createBodies(initialBodies);
+});
+
 removeAllButton.addEventListener('click', () => {
   // Remove all bodies from the simulation
   bodies = [];
@@ -97,9 +103,9 @@ const centerX = canvas.width / 2;
 const centerY = canvas.height / 2;
 
 let initialBodies = [
-  { x: centerX, y: centerY, vx: 0, vy: 0, radius: 20, color: 'blue', mass: 4000 },   // Central body with high mass
-  { x: centerX, y: 550, vx: -1.53, vy: 0, radius: 5, color: 'black', mass: 1 },
-  { x: centerX, y: 100, vx: 1.20, vy: 0, radius: 5, color: 'black', mass: 1 },
+  { x: centerX, y: centerY, vx: 0, vy: 0, radius: 10, color: 'blue', mass: 4000 },   // Central body with high mass
+  { x: centerX, y: 550, vx: -1.53, vy: 0, radius: 2, color: 'black', mass: 1 },
+  { x: centerX, y: 100, vx: 1.20, vy: 0, radius: 2, color: 'black', mass: 1 },
 ]
 
 function createBodies(initialData) {
@@ -113,7 +119,11 @@ function createInitialState(n) {
     const x = Math.floor(Math.random() * canvas.width);
     const y = Math.floor(Math.random() * canvas.height);
     const mass = Math.floor(Math.random() * 30);
-    const newBody = new Body(x, y, 0, 0, 2, 'black', mass); // Assuming mass is based on radius
+
+    const vx = Math.random() - 0.5;
+    const vy = Math.random() - 0.5;
+
+    const newBody = new Body(x, y, vx, vy, 2, 'black', mass); // Assuming mass is based on radius
 
     initialState.push(newBody);
   }

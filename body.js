@@ -131,12 +131,17 @@ export class Body {
     otherBody.vx += impulse * nx * this.mass;
     otherBody.vy += impulse * ny * this.mass;
 
-    // Separate the bodies to prevent overlap
-    // const overlap = minDistance - distance;
-    // this.x += nx * overlap / 2;
-    // this.y += ny * overlap / 2;
-    // otherBody.x -= nx * overlap / 2;
-    // otherBody.y -= ny * overlap / 2;
+    // Separate the bodies to prevent overlap by moving the smallest
+    // NB: This isnt very accurate to real life but prevents glitches
+    const overlap = minDistance - distance;
+
+    if (this.mass < otherBody.mass) {
+      this.x += nx * overlap / 2;
+      this.y += ny * overlap / 2;
+    } else {
+      otherBody.x -= nx * overlap / 2;
+      otherBody.y -= ny * overlap / 2;
+    }
 
     // Check we haven't nudged a body outside of bounds
     if (getBoundaryCollision()) {
