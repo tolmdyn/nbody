@@ -123,12 +123,13 @@ const centerY = canvas.height / 2;
 // orbital velocity of body = v = sqrt( ( g * mass ) / radius)
 // So if large body = 50000, radius = 150, g = 0.1 (gravitational constant)
 // v = sqrt( (0.1 * 50000) / 150 ) = 5.77
+// Circular orbit (using formula):
+// { x: centerX, y: centerY - 150, vx: -5.77, vy: 0, radius: 3, color: 'black', mass: 1 }, 
 
 let initialBodies = [
   { x: centerX, y: centerY, vx: 0, vy: 0, radius: 5, color: 'red', mass: 50000 },           // Central body with high mass ("sun")
-  // { x: centerX, y: centerY - 150, vx: -5.77, vy: 0, radius: 3, color: 'black', mass: 1 },  // Circular orbit (using formula)
-  { x: centerX, y: 750, vx: (-0.45 - 3.5), vy: 0, radius: 2.5, color: 'black', mass: 50 },  // Orbiting "planet" 
-  { x: centerX, y: 740, vx: (0.25 - 3.5), vy: 0, radius: 2, color: 'blue', mass: 1 },       // Orbiting "moon" around "planet"
+  { x: centerX, y: 750, vx: (0 - 3.78), vy: 0, radius: 2.5, color: 'black', mass: 50 },     // Orbiting "planet" 
+  { x: centerX, y: 735, vx: (-0.58 - 3.78), vy: 0, radius: 2, color: 'blue', mass: 1 },     // Orbiting "moon" around "planet"
 ]
 
 // Current bodies array
