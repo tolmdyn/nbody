@@ -61,6 +61,9 @@ export class Body {
       ) {
         this.vx = -this.vx;
       }
+    } else {
+      // Possibly worth checking if a body is far outside of bounds that we
+      // "forget" about it and stop updating to save cpu time.
     }
   }
 

@@ -98,13 +98,13 @@
           <label for="xPosition">X Position:</label>
           <input type="number" id="xPosition" name="xPosition" value="0" required>
           <label for="yPosition">Y Position:</label>
-          <input type="number" id="yPosition" name="yPosition" value="-200" required>
+          <input type="number" id="yPosition" name="yPosition" value="-150" required>
           <label for="xVelocity">X Velocity:</label>
-          <input type="number" step="0.0001" id="xVelocity" name="xVelocity" value="1.49" required>
+          <input type="number" step="0.0001" id="xVelocity" name="xVelocity" value="-3.5" required>
           <label for="yVelocity">Y Velocity:</label>
           <input type="number" step="0.0001" id="yVelocity" name="yVelocity" value="0" required>
           <label for="radius">Radius:</label>
-          <input type="number" id="radius" name="radius" value="5" required>
+          <input type="number" id="radius" name="radius" value="3" required>
           <label for="mass">Mass (optional):</label>
           <input type="number" id="mass" name="mass">
           <label for="color">Color:</label>
@@ -114,8 +114,8 @@
       </div>
       <br>
       <div class="form-container">
+        <h2>Simulation:</h2>
         <div class="control-row">
-          <h2>Simulation:</h2>
           <!-- Checkbox for body collision -->
           <label style="margin-left: 0px;">
             <input type="checkbox" id="bodyCollisionCheckbox" checked>
@@ -137,6 +137,9 @@
     </div>
   </div>
   <script src="script.js" type="module"></script>
+  <div style="text-align: center; margin-top: 20px; font-size: 0.9em; color: #555;">
+    By <a href="https://github.com/tolmdyn" style="color: #007bff;">tolmdyn</a> | <a href="https://github.com/tolmdyn/nbody" style="color: #007bff;">Source code</a>
+  </div>
 </body>
 
 </html>

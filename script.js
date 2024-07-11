@@ -93,21 +93,6 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 // ---------------------------------
 
-// let initialBodies = [
-//   new Body(380, 380, 0, 0, 20, 'blue', 4000),   // Central body with high mass
-//   new Body(380, 550, -1.53, 0, 5, 'black', 1),
-//   new Body(380, 100, 1.20, 0, 5, 'black', 1),
-// ]
-
-const centerX = canvas.width / 2;
-const centerY = canvas.height / 2;
-
-let initialBodies = [
-  { x: centerX, y: centerY, vx: 0, vy: 0, radius: 10, color: 'blue', mass: 4000 },   // Central body with high mass
-  { x: centerX, y: 550, vx: -1.53, vy: 0, radius: 2, color: 'black', mass: 1 },
-  { x: centerX, y: 100, vx: 1.20, vy: 0, radius: 2, color: 'black', mass: 1 },
-]
-
 function createBodies(initialData) {
   return initialData.map(data => new Body(data.x, data.y, data.vx, data.vy, data.radius, data.color, data.mass));
 }
@@ -130,6 +115,21 @@ function createInitialState(n) {
 
   return initialState;
 }
+
+const centerX = canvas.width / 2;
+const centerY = canvas.height / 2;
+
+// To achieve a stable circular orbit (https://en.wikipedia.org/wiki/Circular_orbit)
+// orbital velocity of body = v = sqrt( ( g * mass ) / radius)
+// So if large body = 50000, radius = 150, g = 0.1 (gravitational constant)
+// v = sqrt( (0.1 * 50000) / 150 ) = 5.77
+
+let initialBodies = [
+  { x: centerX, y: centerY, vx: 0, vy: 0, radius: 5, color: 'red', mass: 50000 },           // Central body with high mass ("sun")
+  { x: centerX, y: centerY - 150, vx: -5.77, vy: 0, radius: 3, color: 'orange', mass: 1 },  // Circular orbit (using formula)
+  { x: centerX, y: 750, vx: (-0.45 - 3.5), vy: 0, radius: 2.5, color: 'black', mass: 50 },  // Orbiting "planet" 
+  { x: centerX, y: 740, vx: (0.25 - 3.5), vy: 0, radius: 2, color: 'blue', mass: 1 },       // Orbiting "moon" around "planet"
+]
 
 // Current bodies array
 let bodies = createBodies(initialBodies);

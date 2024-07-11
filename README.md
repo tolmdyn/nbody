@@ -1,6 +1,6 @@
 # N-Body Simulation
 
-This project implements a basic simulation of the gravitational interaction between multiple bodies (or particles), using Newton's law of gravitation, with toggleable collision detection. 
+This project implements a basic simulation of the gravitational interaction between multiple bodies (or particles), using [Newton's law of gravitation](https://en.wikipedia.org/wiki/Newton%27s_law_of_universal_gravitation), with toggleable collision detection. 
 
 Written in JavaScript using HTML5 Canvas. 
 
