@@ -79,6 +79,12 @@ bodyCollisionCheckbox.addEventListener('change',  () => {
 boundaryCollisionCheckbox.addEventListener('change', () => {
   setBoundaryCollision(boundaryCollisionCheckbox.checked);
 });
+
+document.addEventListener('DOMContentLoaded', () => {
+  // Set the default state of the checkboxes
+  document.getElementById('bodyCollisionCheckbox').checked = true; // Default to checked
+  document.getElementById('boundaryCollisionCheckbox').checked = false; // Default to unchecked
+});
 // ---------------------------------
 
 // let initialBodies = [
@@ -98,6 +104,21 @@ let initialBodies = [
 
 function createBodies(initialData) {
   return initialData.map(data => new Body(data.x, data.y, data.vx, data.vy, data.radius, data.color, data.mass));
+}
+
+function createInitialState(n) {
+  let initialState = [];
+
+  for (let i = 0; i < n; i++) {
+    const x = Math.floor(Math.random() * canvas.width);
+    const y = Math.floor(Math.random() * canvas.height);
+    const mass = Math.floor(Math.random() * 30);
+    const newBody = new Body(x, y, 0, 0, 2, 'black', mass); // Assuming mass is based on radius
+
+    initialState.push(newBody);
+  }
+
+  return initialState;
 }
 
 // Current bodies array

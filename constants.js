@@ -4,10 +4,10 @@
 export const G = 0.1;
 
 // Coefficient of Restitution
-export const e = 0.9;
+export const e = 0.7;
 
 // Trail length
-export const TRAIL_LENGTH = 200;
+export const TRAIL_LENGTH = 250;
 
 // Show trail
 export const TRAILS = true;
