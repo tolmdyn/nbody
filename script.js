@@ -66,8 +66,8 @@ const centerY = canvas.height / 2;
 // v = sqrt( (0.1 * 50000) / 150 ) = 5.77
 
  let initialBodies = [
-  // Central body with high mass ("sun")
-  { x: centerX, y: centerY, vx: 0, vy: 0, radius: 5, color: 'red', mass: 50000, fixed: true },
+  // Central body with high mass ("sun"), could add fixed:true but unnecessary
+  { x: centerX, y: centerY, vx: 0, vy: 0, radius: 5, color: 'red', mass: 50000 },
   // Orbiting "planet"   
   { x: centerX, y: 750, vx: (0 - 3.78), vy: 0, radius: 2.5, color: 'black', mass: 50 },
   // Orbiting "moon" around "planet"         
